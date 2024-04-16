@@ -47,10 +47,7 @@
                 <td><%=car.getColor()%></td>
                 <td><%=car.getVolume()%></td>
                 <td><%=car.getPrice()%></td>
-                <form action="/car-details" method="get">
-                    <input type="hidden" name="id" value="<%=car.getId()%>">
-                    <td> <button class="btn btn-sm">DETAILS</button></td>
-                </form>
+                <td><a href="/car-details?id=<%=car.getId()%>" class="btn btn-sm btn-success">DETAILS</a></td>
             </tr>
             <%
                     }

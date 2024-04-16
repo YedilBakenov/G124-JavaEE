@@ -1,3 +1,4 @@
+import db.DBConnector;
 import db.DBManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,7 +12,7 @@ import java.io.IOException;
 @WebServlet(value = "/main")
 public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-           request.setAttribute("mashinki", DBManager.getCars());
+           request.setAttribute("mashinki", DBConnector.getAllCars());
            request.getRequestDispatcher("/html/main.jsp").forward(request, response);
     }
 }

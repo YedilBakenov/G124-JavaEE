@@ -1,4 +1,5 @@
 import db.Car;
+import db.DBConnector;
 import db.DBManager;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,9 +16,7 @@ public class DetailsCarServlet extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("id"));
 
-        System.out.println(id);
-
-        request.setAttribute("mashina", DBManager.getCarById(id));
+        request.setAttribute("mashina", DBConnector.getCarById(id));
 
         request.getRequestDispatcher("/html/car-details.jsp").forward(request, response);
     }
