@@ -17,6 +17,7 @@ public class DetailsCarServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
 
         request.setAttribute("mashina", DBConnector.getCarById(id));
+        request.setAttribute("goroda", DBConnector.getAllCities());
 
         request.getRequestDispatcher("/html/car-details.jsp").forward(request, response);
     }

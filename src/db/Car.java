@@ -1,10 +1,9 @@
 package db;
 
-import java.util.ArrayList;
-
 public class Car {
     private String model;
     private String country;
+    private City city;
     private double volume;
 
     private String color;
@@ -16,13 +15,14 @@ public class Car {
     public Car() {
     }
 
-    public Car(int id, String model, String country, double volume, String color, int price) {
+    public Car(int id, String model, String country, double volume, String color, int price, City city) {
         this.model = model;
         this.country = country;
         this.volume = volume;
         this.color = color;
         this.price = price;
         this.id = id;
+        this.city = city;
     }
 
     public String getModel() {
@@ -71,5 +71,13 @@ public class Car {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }

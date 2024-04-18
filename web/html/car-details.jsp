@@ -1,4 +1,6 @@
 <%@ page import="db.Car" %>
+<%@ page import="db.City" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -28,6 +30,25 @@
                 </div>
                 <div class="col-12 mt-3">
                     <input type="text" name="carCountry" value="<%=car.getCountry()%>" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <label>CITY</label>
+                </div>
+                <div class="col-12 mt-3">
+                    <select class="form-control" name="car_city_id">
+
+                        <% ArrayList<City> cities = (ArrayList<City>) request.getAttribute("goroda");
+                            if (cities != null) {
+                                for (City city : cities) {
+                        %>
+                        <option value="<%=city.getId()%>"><%=city.getCity_name()%></option>
+                        <%
+                                }
+                            }
+                        %>
+                    </select>
                 </div>
             </div>
             <div class="row">

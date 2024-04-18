@@ -1,4 +1,5 @@
 import db.Car;
+import db.City;
 import db.DBConnector;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +18,9 @@ public class UpdateCarServlet extends HttpServlet {
         String color = request.getParameter("carColor");
         int price = Integer.parseInt(request.getParameter("carPrice"));
         int id = Integer.parseInt(request.getParameter("id"));
+        int city_id = Integer.parseInt(request.getParameter("car_city_id"));
+
+        City city = DBConnector.getCityById(city_id);
 
         Car car = new Car();
         car.setId(id);
@@ -25,6 +29,7 @@ public class UpdateCarServlet extends HttpServlet {
         car.setPrice(price);
         car.setVolume(volume);
         car.setModel(model);
+        car.setCity(city);
 
         DBConnector.updateCar(car);
 
