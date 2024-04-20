@@ -29,7 +29,7 @@ public class DBConnector {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * " +
                     "FROM cars c " +
-                    "INNER JOIN cities c2 " +
+                    "LEFT JOIN cities c2 " +
                     "ON c.city_id = c2.id " +
                     "ORDER BY c.id ASC ");
             ResultSet resultSet = statement.executeQuery();
@@ -186,5 +186,39 @@ public class DBConnector {
         }
 
         return city;
+    }
+
+    public static void addCity(City city) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO cities (city_name, region) " +
+                    "VALUES (?, ?)");
+            statement.setString(1, city.getCity_name());
+            statement.setString(2, city.getRegion());
+
+            statement.executeUpdate();
+            statement.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateCity(City city) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("UPDATE cities SET " +
+                    "city_name = ?, region = ? WHERE id = ? ");
+
+            statement.setString(1, city.getCity_name());
+            statement.setString(2, city.getRegion());
+            statement.setInt(3, city.getId());
+
+            statement.executeUpdate();
+            statement.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

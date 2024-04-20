@@ -7,6 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link text-light" href="/">ALL CARS</a>
+        <a class="nav-link text-light" href="/all-cities">ALL CITIES</a>
         <a class="nav-link text-light" href="/add-car">ADD CAR</a>
       </div>
     </div>
