@@ -60,26 +60,26 @@ public class DBConnector {
         return cars;
     }
 
-    public static void addCar(Car car){
-        try{
-          PreparedStatement statement = connection.prepareStatement("INSERT INTO cars (model,volume, price, " +
-                  "country, color, city_id) VALUES (?, ?, ?, ?, ?, ?)");
-          statement.setString(1, car.getModel());
-          statement.setDouble(2, car.getVolume());
-          statement.setInt(3, car.getPrice());
-          statement.setString(4, car.getCountry());
-          statement.setString(5, car.getColor());
-          statement.setInt(6, car.getCity().getId());
+    public static void addCar(Car car) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO cars (model,volume, price, " +
+                    "country, color, city_id) VALUES (?, ?, ?, ?, ?, ?)");
+            statement.setString(1, car.getModel());
+            statement.setDouble(2, car.getVolume());
+            statement.setInt(3, car.getPrice());
+            statement.setString(4, car.getCountry());
+            statement.setString(5, car.getColor());
+            statement.setInt(6, car.getCity().getId());
 
-          statement.executeUpdate();
-          statement.close();
+            statement.executeUpdate();
+            statement.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static Car getCarById(int id){
+    public static Car getCarById(int id) {
         Car car = new Car();
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM cars WHERE id = ? ");
@@ -87,7 +87,7 @@ public class DBConnector {
 
             ResultSet resultSet = statement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 car.setId(resultSet.getInt("id"));
                 car.setColor(resultSet.getString("color"));
                 car.setVolume(resultSet.getDouble("volume"));
@@ -98,7 +98,7 @@ public class DBConnector {
                 statement.close();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return car;
@@ -121,20 +121,20 @@ public class DBConnector {
             statement.executeUpdate();
             statement.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void deleteCar(int id) {
-        try{
+        try {
 
             PreparedStatement statement = connection.prepareStatement("DELETE FROM cars WHERE id = ? ");
             statement.setInt(1, id);
 
             statement.executeUpdate();
             statement.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -142,11 +142,11 @@ public class DBConnector {
     public static ArrayList<City> getAllCities() {
         ArrayList<City> cities = new ArrayList<>();
 
-        try{
+        try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM cities");
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 City city = new City();
                 city.setId(resultSet.getInt("id"));
                 city.setCity_name(resultSet.getString("city_name"));
@@ -157,7 +157,7 @@ public class DBConnector {
 
             statement.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -173,7 +173,7 @@ public class DBConnector {
 
             ResultSet resultSet = statement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 city.setId(resultSet.getInt("id"));
                 city.setCity_name(resultSet.getString("city_name"));
                 city.setRegion(resultSet.getString("region"));
@@ -181,7 +181,7 @@ public class DBConnector {
                 statement.close();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -199,7 +199,7 @@ public class DBConnector {
             statement.executeUpdate();
             statement.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -217,8 +217,154 @@ public class DBConnector {
             statement.executeUpdate();
             statement.close();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static User getUserByEmail(String email) {
+        User user = new User();
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE email = ? ");
+            statement.setString(1, email);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt("id"));
+                user.setEmail(resultSet.getString("email"));
+                user.setFull_name(resultSet.getString("full_name"));
+                user.setPassword(resultSet.getString("password"));
+
+                statement.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return user;
+    }
+
+    public static ArrayList<News> getAllNews() {
+        ArrayList<News> newsList = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                    "FROM news n " +
+                    "INNER JOIN users u " +
+                    "ON n.user_id = u.id " +
+                    "ORDER BY n.date DESC ");
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                News news = new News();
+                news.setId(resultSet.getInt("id"));
+                news.setContent(resultSet.getString("content"));
+                news.setDate(resultSet.getTimestamp("date"));
+                news.setTitle(resultSet.getString("title"));
+
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
+                user.setEmail(resultSet.getString("email"));
+                user.setFull_name(resultSet.getString("full_name"));
+
+                news.setUser(user);
+
+                newsList.add(news);
+            }
+
+            statement.close();
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return newsList;
+    }
+
+    public static User getUserById(int authorId) {
+        User user = new User();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = ? ");
+            statement.setInt(1, authorId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setEmail(resultSet.getString("email"));
+                user.setFull_name(resultSet.getString("full_name"));
+                user.setPassword(resultSet.getString("password"));
+
+                statement.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public static void addNews(News news) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO news (title, " +
+                    "content, date, user_id) VALUES (?, ?, NOW(), ?)");
+            statement.setString(1, news.getTitle());
+            statement.setString(2, news.getTitle());
+            statement.setInt(3, news.getUser().getId());
+
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static News getNewsById(int newsId) {
+
+        News news = new News();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                    "FROM news n " +
+                    "INNER JOIN users u " +
+                    "ON n.user_id = u.id " +
+                    "WHERE n.id = ? ");
+
+            statement.setInt(1, newsId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                news = new News();
+                news.setId(resultSet.getInt("id"));
+                news.setContent(resultSet.getString("content"));
+                news.setTitle(resultSet.getString("title"));
+
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
+                user.setFull_name(resultSet.getString("full_name"));
+                user.setEmail(resultSet.getString("email"));
+
+                news.setUser(user);
+
+                resultSet.close();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return news;
     }
 }

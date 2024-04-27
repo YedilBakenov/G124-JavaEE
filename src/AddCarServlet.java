@@ -1,7 +1,4 @@
-import db.Car;
-import db.City;
-import db.DBConnector;
-import db.DBManager;
+import db.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,8 +11,12 @@ import java.io.IOException;
 public class AddCarServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("goroda", DBConnector.getAllCities());
-        request.getRequestDispatcher("/html/add-car.jsp").forward(request, response);
+        User user = (User)request.getSession().getAttribute("currentUser");
+
+        if(user!=null) {
+            request.setAttribute("goroda", DBConnector.getAllCities());
+            request.getRequestDispatcher("/html/add-car.jsp").forward(request, response);
+        }else response.sendRedirect("/html/403.jsp");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

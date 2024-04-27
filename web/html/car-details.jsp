@@ -76,20 +76,29 @@
                 </div>
             </div>
             <input type="hidden" value="<%=car.getId()%>" name="id">
+
+            <% if(user!=null){%>
             <div class="row">
                 <div class="col-12 mt-3">
                     <button class="btn btn-sm btn-success">UPDATE</button>
                 </div>
             </div>
             <%
-                }
+                }                                             }
             %>
         </div>
     </div>
 </form>
+
+<% if(user!=null){%>
+
 <form action="/car-delete" method="post">
     <input type="hidden" name="carId" value="<%=car.getId()%>">
     <button class="btn btn-danger btn-sm" style="margin-left: 260px">DELETE</button>
 </form>
+
+<%
+    }
+%>
 </body>
 </html>

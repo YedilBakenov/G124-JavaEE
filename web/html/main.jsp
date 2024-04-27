@@ -10,9 +10,13 @@
 <body>
 <%@include file="navbar.jsp" %>
 
+<% if(user!=null){%>
+
 <button type="button" class="btn btn-sm btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addCar">
     + ADD CAR
 </button>
+
+<% }%>
 
 <div class="modal fade" id="addCar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
