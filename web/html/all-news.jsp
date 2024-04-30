@@ -63,7 +63,7 @@
 <% ArrayList<News> newsList = (ArrayList<News>) request.getAttribute("novosti");
     for (News n : newsList) {
 %>
-<div class="mt-3" style="background-color: rgba(141,141,156,0.88)">
+<div class="mt-3 p-5" style="background-color: rgba(141,141,156,0.88)">
     <a class="text-decoration-none text-dark" href="/details-news?id=<%=n.getId()%>"><h1><%=n.getTitle()%>
     </h1></a>
     <p class="text-light"><%=n.getContent()%>

@@ -237,6 +237,7 @@ public class DBConnector {
                 user.setEmail(resultSet.getString("email"));
                 user.setFull_name(resultSet.getString("full_name"));
                 user.setPassword(resultSet.getString("password"));
+                user.setRole_id(resultSet.getInt("role_id"));
 
                 statement.close();
             }
@@ -350,6 +351,7 @@ public class DBConnector {
                 news.setId(resultSet.getInt("id"));
                 news.setContent(resultSet.getString("content"));
                 news.setTitle(resultSet.getString("title"));
+                news.setDate(resultSet.getTimestamp("date"));
 
                 User user = new User();
                 user.setId(resultSet.getInt("user_id"));
@@ -366,5 +368,75 @@ public class DBConnector {
         }
 
         return news;
+    }
+
+    public static void updateNews(News news) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("UPDATE news SET title = ?, " +
+                    "content = ? WHERE id = ?");
+
+            statement.setString(1, news.getTitle());
+            statement.setString(2, news.getContent());
+            statement.setInt(3, news.getId());
+
+            statement.executeUpdate();
+            statement.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void deleteNews(int id) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM news WHERE id = ?");
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+            statement.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void addUser(User user) {
+
+        try{
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO users (email, " +
+                    "password, role_id) VALUES (?, ?, ?)");
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getPassword());
+            statement.setInt(3, user.getRole_id());
+
+            statement.executeUpdate();
+            statement.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<User> getAllUsers() {
+        ArrayList<User> users = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM users");
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                User user = new User();
+                user.setEmail(resultSet.getString("email"));
+                users.add(user);
+            }
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return users;
     }
 }

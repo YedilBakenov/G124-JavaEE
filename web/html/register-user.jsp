@@ -9,7 +9,7 @@
 </head>
 <body>
 <%@include file="navbar.jsp" %>
-<form action="/authorization" method="get">
+<form action="/registration-user" method="post">
     <div class="row justify-content-center">
         <div class="col-6">
             <div class="row">
@@ -30,8 +30,15 @@
             </div>
             <div class="row">
                 <div class="col-12 mt-3">
-                    <button class="btn btn-sm btn-success">SIGN IN</button>
-                    <a class="btn btn-submit btn-secondary btn-sm" href="/registration-user">REGISTRATION</a>
+                    <label>RETYPE PASSWORD</label>
+                </div>
+                <div class="col-12 mt-3">
+                    <input type="password" name="passwordRetype" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-3">
+                    <button class="btn btn-sm btn-success">REGISTRATION</button>
                 </div>
             </div>
         </div>

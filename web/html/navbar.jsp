@@ -13,7 +13,7 @@
         <a class="nav-link text-light" href="/">ALL CARS</a>
         <a class="nav-link text-light" href="/all-cities">ALL CITIES</a>
 
-        <% if(user!=null) {%>
+        <% if(user!=null && user.getRole_id()==1) {%>
 
         <a class="nav-link text-light" href="/add-car">ADD CAR</a>
 
@@ -21,7 +21,13 @@
           }
         %>
         <a class="nav-link text-light" href="/all-news">ALL NEWS</a>
+
+        <% if(user==null) {%>
+
         <a class="nav-link text-light" href="/login">LOGIN</a>
+
+        <% }%>
+
         <%
           if (user != null) {
         %>

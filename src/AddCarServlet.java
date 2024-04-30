@@ -13,7 +13,7 @@ public class AddCarServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User)request.getSession().getAttribute("currentUser");
 
-        if(user!=null) {
+        if(user!=null && user.getRole_id()==1) {
             request.setAttribute("goroda", DBConnector.getAllCities());
             request.getRequestDispatcher("/html/add-car.jsp").forward(request, response);
         }else response.sendRedirect("/html/403.jsp");

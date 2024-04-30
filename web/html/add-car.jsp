@@ -8,9 +8,9 @@
 </head>
 <body>
 <%@include file="navbar.jsp" %>
-<div class="row">
+<form action="/add-car" method="post">
+<div class="row justify-content-center">
     <div class="col-6">
-        <form action="/add-car" method="post">
             <div class="row">
                 <div class="col-12 mt-3">
                     <label>MODEL</label>
@@ -75,9 +75,9 @@
                     <button class="btn bnt-sm btn-success">ADD CAR</button>
                 </div>
             </div>
-        </form>
     </div>
 </div>
+</form>
 
 </body>
 </html>
