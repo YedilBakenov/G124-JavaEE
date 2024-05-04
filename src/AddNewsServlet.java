@@ -1,4 +1,3 @@
-import db.City;
 import db.DBConnector;
 import db.News;
 import db.User;

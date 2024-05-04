@@ -439,4 +439,87 @@ public class DBConnector {
 
         return users;
     }
+
+    public static void addComment(Comment comment) {
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO comments " +
+                    "(user_id, news_id, date, content_comment) VALUES (?, ?, NOW(), ?)");
+            statement.setInt(1, comment.getUser().getId());
+            statement.setInt(2, comment.getNews().getId());
+            statement.setString(3, comment.getContent_comment());
+
+            statement.executeUpdate();
+            statement.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    public static ArrayList<Comment> getAllCommentsByNewsId(int newsId) {
+        ArrayList<Comment> comments = new ArrayList<>();
+    
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                    "FROM comments c " +
+                    "INNER JOIN news n " +
+                    "ON c.news_id = n.id " +
+                    "INNER JOIN users u " +
+                    "ON c.user_id = u.id " +
+                    "WHERE n.id = ? " +
+                    "ORDER BY c.date DESC ");
+
+            statement.setInt(1, newsId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                Comment comment = new Comment();
+                comment.setId(resultSet.getInt("id"));
+                comment.setDate(resultSet.getTimestamp("date"));
+                comment.setContent_comment(resultSet.getString("content_comment"));
+
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
+                user.setEmail(resultSet.getString("email"));
+                user.setFull_name(resultSet.getString("full_name"));
+                user.setRole_id(resultSet.getInt("role_id"));
+
+                News news = new News();
+                news.setId(resultSet.getInt("news_id"));
+                news.setTitle(resultSet.getString("title"));
+                news.setContent(resultSet.getString("content"));
+
+                comment.setNews(news);
+                comment.setUser(user);
+
+                comments.add(comment);
+
+            }
+
+            statement.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return comments;
+    }
+
+    public static void deleteComment(int id) {
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM comments WHERE id = ? ");
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+            statement.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

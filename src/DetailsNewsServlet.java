@@ -1,3 +1,4 @@
+import db.Comment;
 import db.DBConnector;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,6 +15,11 @@ public class DetailsNewsServlet extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("id"));
         request.setAttribute("news", DBConnector.getNewsById(id));
+        request.setAttribute("comments", DBConnector.getAllCommentsByNewsId(id));
+
+        for(Comment comment: DBConnector.getAllCommentsByNewsId(id)){
+            System.out.println(comment.getUser().getId());
+        }
 
         request.getRequestDispatcher("/html/news-details.jsp").forward(request, response);
     }

@@ -19,11 +19,21 @@ public class AuthorizationServlet extends HttpServlet {
 
         User user = DBConnector.getUserByEmail(email);
 
-        if(user!=null && user.getPassword().equals(password)){
+        boolean flag = false;
+
+        for(User user1: DBConnector.getAllUsers()){
+            if(user1.getEmail().equals(email)){
+                flag = true;
+            }
+        }
+
+        if(!flag){
+            response.sendRedirect("/html/403.jsp");
+        } else if(user.getPassword().equals(password) && user.getEmail().equals(email)){
             HttpSession session = request.getSession();
             session.setAttribute("currentUser", user);
             request.getRequestDispatcher("/register").forward(request, response);
-        }else {
+        } else {
             response.sendRedirect("/html/403.jsp");
         }
     }

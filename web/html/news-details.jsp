@@ -1,4 +1,6 @@
 <%@ page import="db.News" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="db.Comment" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -16,7 +18,7 @@
     </p>
     <strong>Created at </strong> <%=news.getDate()%> <strong> Author by </strong> <%=news.getUser().getFull_name()%>
 
-    <% if (user!=null && news.getUser().getId()==user.getId()) {%>
+    <% if (user != null && news.getUser().getId() == user.getId()) {%>
     <div class="mt-2">
         <button type="button" class="btn btn-sm btn-success mt-3" data-bs-toggle="modal" data-bs-target="#updateNews">
             UPDATE NEWS
@@ -69,6 +71,50 @@
     </div>
 </div>
 
+<% if (user != null) { %>
 
+<form action="/add-comment" method="post">
+    <input type="hidden" name="news_id" value="<%=news.getId()%>">
+    <input type="hidden" name="user_id" value="<%=user.getId()%>">
+    <div class="mt-2 p-2">
+        <textarea class="form-control" name="news_comment"></textarea>
+    </div>
+    <div class="ms-2">
+        <button class="btn btn-sm btn-secondary">ADD COMMENT</button>
+    </div>
+</form>
+
+<% } %>
+
+<div class="mt-2">
+    <% ArrayList<Comment> comments = (ArrayList<Comment>) request.getAttribute("comments");
+        if (comments != null) {
+            for (Comment comment : comments) {
+    %>
+    <div class="list-group mt-3">
+        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><%=comment.getUser().getFull_name()%></h5>
+                <small><%=comment.getDate()%>
+                </small>
+            </div>
+            <p class="mb-1"><%=comment.getContent_comment()%></p>
+        </a>
+
+        <% if(user!=null && user.getId()==comment.getUser().getId()){ %>
+
+        <form action="/delete-comment" method="post">
+            <input type="hidden" name="id" value="<%=comment.getId()%>">
+            <input type="hidden" name="news_id" value="<%=news.getId()%>">
+            <button class="btn btn-sm btn-danger">DELETE COMMENT!</button>
+        </form>
+
+        <% } %>
+    </div>
+    <%
+            }
+        }
+    %>
+</div>
 </body>
 </html>

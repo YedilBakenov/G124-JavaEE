@@ -10,7 +10,7 @@
 <body>
 <%@include file="navbar.jsp" %>
 
-<% if(user!=null){%>
+<% if(user!=null && user.getRole_id()==1){%>
 
 <button type="button" class="btn btn-sm btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addCar">
     + ADD CAR
