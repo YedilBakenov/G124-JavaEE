@@ -461,7 +461,7 @@ public class DBConnector {
 
     public static ArrayList<Comment> getAllCommentsByNewsId(int newsId) {
         ArrayList<Comment> comments = new ArrayList<>();
-    
+
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * " +
                     "FROM comments c " +
@@ -521,5 +521,48 @@ public class DBConnector {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<Car> getCarsByKey(String key) {
+        ArrayList<Car> cars = new ArrayList<>();
+
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * " +
+                    "FROM cars c " +
+                    "INNER JOIN cities city " +
+                    "ON c.city_id = city.id " +
+                    "WHERE LOWER(c.model) LIKE LOWER(?) OR LOWER(c.country) LIKE LOWER(?) " +
+                    "ORDER BY c.id ASC ");
+
+            statement.setString(1, key);
+            statement.setString(2, key);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                Car car = new Car();
+                car.setId(resultSet.getInt("id"));
+                car.setCountry(resultSet.getString("country"));
+                car.setModel(resultSet.getString("model"));
+                car.setVolume(resultSet.getDouble("volume"));
+                car.setColor(resultSet.getString("color"));
+                car.setPrice(resultSet.getInt("price"));
+
+                City city = new City();
+                city.setId(resultSet.getInt("city_id"));
+                city.setCity_name(resultSet.getString("city_name"));
+                city.setRegion(resultSet.getString("region"));
+
+                car.setCity(city);
+
+                cars.add(car);
+            }
+
+            resultSet.close();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return cars;
     }
 }

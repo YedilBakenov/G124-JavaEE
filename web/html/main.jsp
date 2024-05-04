@@ -10,13 +10,38 @@
 <body>
 <%@include file="navbar.jsp" %>
 
-<% if(user!=null && user.getRole_id()==1){%>
+<% if (user != null && user.getRole_id() == 1) {%>
 
 <button type="button" class="btn btn-sm btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addCar">
     + ADD CAR
 </button>
 
 <% }%>
+
+<% String key = (String) request.getAttribute("key");
+    if (key != null) {
+%>
+
+<form action="/main" method="get">
+    <div class="d-flex">
+        <input type="text" class="form-control mt-2 w-50" name="key" value="<%=key%>">
+        <button class="btn btn-success btn-sm ms-2 mt-2" style="height: 30px">SEARCH</button>
+    </div>
+</form>
+
+<%
+    }else {
+%>
+<form action="/main" method="get">
+    <div class="d-flex">
+        <input type="text" class="form-control mt-2 w-50" name="key">
+        <button class="btn btn-success btn-sm ms-2">SEARCH</button>
+    </div>
+</form>
+
+<%
+    }
+%>
 
 <div class="modal fade" id="addCar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
      aria-labelledby="staticBackdropLabel" aria-hidden="true">
